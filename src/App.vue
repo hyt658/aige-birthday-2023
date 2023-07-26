@@ -46,6 +46,7 @@ html {
 body {
     margin: 0px;
     background: rgb(116, 116, 170);
+    user-select: none;
 }
 
 .stage {
