@@ -70,10 +70,10 @@ function confettiSuprise() {
             dialogAnimation("#unknown-dialog", "#fans-dialog");
             shootConfetti()
 
-            // 展示后5秒内点击消息框会无效
+            // 展示后3.5秒内点击消息框会无效
             setTimeout(() => {
                 allowClick = true;
-            }, 5000);
+            }, 3500);
 
             // 结束倒数
             clearInterval(clock);
