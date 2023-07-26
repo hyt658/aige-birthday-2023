@@ -2,7 +2,7 @@
     <img draggable="false" id="doorClose" src="@/assets/images/doorClose.jpg" 
         alt="艾鸽的房门" @click.once="openDoor" v-show="doorState !== 'open'" />
     <img draggable="false" id="doorOpen" src="@/assets/images/doorOpen.jpg" 
-        alt="艾鸽的房门（开）" @click="enterRoom" v-show="doorState !== 'close'"/> 
+        alt="艾鸽的房门（开）" v-show="doorState !== 'close'"/> 
 
     <div id="dialog" class="dialog" @click.once="openDoor">
         <img draggable="false" id="dialogBox" src="@/assets/images/dialog-aige.png" />
@@ -17,7 +17,6 @@ import anime from "animejs";
 
 const doorState = ref("close")
 const emit = defineEmits<{(e: "changeStage"): void}>();
-let allowEnterRoom = false;
 
 function openDoor(): void {
     const animationTime = 1500;
@@ -46,18 +45,11 @@ function openDoor(): void {
         opacity: 1,
         duration: animationTime,
         easing: "easeOutExpo",
-        complete: () => { allowEnterRoom = true; }
+        complete: () => { enterRoom() }
     }, 0);
 }
 
 function enterRoom(): void {
-    if (allowEnterRoom) {
-        allowEnterRoom = false
-        enterRoomReal()
-    }
-}
-
-function enterRoomReal(): void {
     // 进门，关灯
     anime.timeline({}).add({
         targets: "#doorOpen",
