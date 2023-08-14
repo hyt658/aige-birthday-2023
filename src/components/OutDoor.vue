@@ -19,7 +19,7 @@ const doorState = ref("close")
 const emit = defineEmits<{(e: "changeStage"): void}>();
 
 function openDoor(): void {
-    const animationTime = 1500;
+    const animationTime = 1200;
 
     // 允许两张图同时存在来做开门转换动画
     doorState.value = "opening"
@@ -58,12 +58,10 @@ function enterRoom(): void {
         duration: 2000,
         easing: "easeInOutQuad",
         complete: () => {
-            // 背景色变黑
-            document.body.style.background = "black"
-            // 进入atDoor阶段，1.5s作为缓冲
+            // 进入party阶段，1.2s作为缓冲
             setTimeout(() => { 
                 emit("changeStage"); 
-            }, 1500)
+            }, 1200)
         }
     }, 0);
 }

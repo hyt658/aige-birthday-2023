@@ -1,33 +1,22 @@
 <template>
-    <div id="AtBgein" class="stage" v-if="currStage === 'atBegin'">
+    <div id="AtBgein" class="stage" v-if="currStage === 'outdoor'">
         <AtBegin @changeStage="changeStage" />
     </div>
-    <div id="AtDoor" class="stage" v-else-if="currStage === 'atDoor'">
-        <AtDoor @changeStage="changeStage" :originBackground="originBackground" />
-    </div>
-    <div id="AtParty" class="stage" v-else>
-        <AtParty @changeStage="changeStage" />
+    <div id="AtDoor" class="stage" v-else>
+        <AtDoor />
     </div>
 </template>
 
 
 <script setup lang="ts">
 import { ref } from "vue"
-import AtBegin from "@/components/AtBegin.vue";
-import AtDoor from "@/components/AtDoor.vue";
-import AtParty from "@/components/AtParty.vue";
+import AtBegin from "@/components/OutDoor.vue";
+import AtDoor from "@/components/AtParty.vue";
 
-let idx = 0;
-const stages = ["atBegin", "atDoor", "atParty"];
-
-const currStage = ref(stages[idx]);
-const originBackground = "rgb(116, 116, 170)"
+const currStage = ref("outdoor");
 
 function changeStage(): void {
-    if (idx < 2) {
-        idx += 1;
-        currStage.value = stages[idx]
-    }
+    currStage.value = "party"
 }
 </script>
 
@@ -64,6 +53,7 @@ body {
     bottom: 0;
     margin-left: -20px;
     max-height: 25%;
+    z-index: 2000;
 
     img {
         display: block;
