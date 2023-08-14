@@ -82,4 +82,28 @@ body {
         user-select: none;
     }
 }
+
+* {
+    cursor: url("@/assets/images/cursor/cursor0.png"), auto;
+    -webkit-animation: cursor 800ms infinite;
+    animation: cursor 800ms infinite;
+}
+
+@-webkit-keyframes cursor {
+    0% {cursor: url("@/assets/images/cursor/cursor0.png"), auto;}
+    20% {cursor: url("@/assets/images/cursor/cursor1.png"), auto;}
+    40% {cursor: url("@/assets/images/cursor/cursor2.png"), auto;}
+    60% {cursor: url("@/assets/images/cursor/cursor3.png"), auto;}
+    80% {cursor: url("@/assets/images/cursor/cursor4.png"), auto;}
+    100% {cursor: url("@/assets/images/cursor/cursor5.png"), auto;}
+} 
+
+@keyframes cursor {
+    0% {cursor: url("@/assets/images/cursor/cursor0.png"), auto;}
+    20% {cursor: url("@/assets/images/cursor/cursor1.png"), auto;}
+    40% {cursor: url("@/assets/images/cursor/cursor2.png"), auto;}
+    60% {cursor: url("@/assets/images/cursor/cursor3.png"), auto;}
+    80% {cursor: url("@/assets/images/cursor/cursor4.png"), auto;}
+    100% {cursor: url("@/assets/images/cursor/cursor5.png"), auto;}
+}
 </style>

@@ -1,11 +1,11 @@
 <template> 
-    <img draggable="false" id="doorClose" src="@/assets/images/doorClose.jpg" 
+    <img draggable="false" id="doorClose" src="@/assets/images/door/doorClose.jpg" 
         alt="艾鸽的房门" @click.once="openDoor" v-show="doorState !== 'open'" />
-    <img draggable="false" id="doorOpen" src="@/assets/images/doorOpen.jpg" 
+    <img draggable="false" id="doorOpen" src="@/assets/images/door/doorOpen.jpg" 
         alt="艾鸽的房门（开）" v-show="doorState !== 'close'"/> 
 
     <div id="dialog" class="dialog" @click.once="openDoor">
-        <img draggable="false" id="dialogBox" src="@/assets/images/dialog-aige.png" />
+        <img draggable="false" id="dialogBox" src="@/assets/images/dialog/dialog-aige.png" />
         <div id="speak">好累啊，终于忙完了。赶紧开门回家吧！</div>
     </div>
 </template>

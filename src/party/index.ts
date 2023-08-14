@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import RoomImg from "@/assets/images/room.jpg";
+import RoomImg from "@/assets/images/room/room.jpg";
 
 class PartyScene extends Phaser.Scene {
     preload() {

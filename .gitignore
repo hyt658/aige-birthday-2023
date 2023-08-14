@@ -27,5 +27,6 @@ coverage
 *.sln
 *.sw?
 
-src_room.psd
+房间.psd
+房间（改）.psd
 plan.txt

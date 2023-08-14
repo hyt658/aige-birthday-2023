@@ -3,15 +3,15 @@
 
     <div id="party"></div>
     <div id="aige-dialog" class="dialog" @click="confettiSuprise" v-show="stage<=2">
-        <img draggable="false" id="dialogBox" src="@/assets/images/dialog-aige.png" alt="艾鸽的对话框" />
+        <img draggable="false" id="dialogBox" src="@/assets/images/dialog/dialog-aige.png" alt="艾鸽的对话框" />
         <div id="speak">嗯？好黑啊，我记得我没有把所有灯都关上呀？让我找找开关在哪...</div>
     </div>
     <div id="unknown-dialog" class="dialog" v-show="(2<=stage)&&(stage<=4)">
-        <img draggable="false" id="dialogBox" src="@/assets/images/dialog-unknown.png" alt="未知的对话框" />
+        <img draggable="false" id="dialogBox" src="@/assets/images/dialog/dialog-unknown.png" alt="未知的对话框" />
         <div id="speak">{{ message }}</div>
     </div>
     <div id="fans-dialog" class="dialog" @click="enterParty" v-show="stage>=4">
-        <img draggable="false" id="dialogBox" src="@/assets/images/dialog-fans.png" alt="宠鸽会的对话框" />
+        <img draggable="false" id="dialogBox" src="@/assets/images/dialog/dialog-fans.png" alt="宠鸽会的对话框" />
         <div id="speak">鸽宝，生日快乐！！</div>
     </div>
 </template>
