@@ -33,16 +33,26 @@ class PartyScene extends Phaser.Scene {
     }
 
     create() {
+        // 定义元素实例字典类型
+        type instance_map = {[key: string]: {
+            image: Phaser.GameObjects.Image,
+            posX: number,
+            posY: number
+        }};
+
         const { width, height } = this.sys.game.canvas;
         const centerX = width / 2;
         const centerY = height / 2;
         const intensityX = 0.008;
         const intensityY = 0.004;
-        const all_instances: {[key: string]: Phaser.GameObjects.Image} = {};
+        const all_instances: instance_map = {};
 
-        // 填充实例数组
-        Object.keys(all_elements).forEach((key) => {
-            all_instances[key] = this.add.image(centerX, centerY, key).setScale(1.05);
+        // 填充实例字典
+        Object.entries(all_elements).forEach(([key, element]) => {
+            const posX = centerX + element["dx"];
+            const posY = centerY + element["dy"];
+            const image = this.add.image(posX, posY, key).setScale(1.05);
+            all_instances[key] = { image, posX, posY };
         });      
 
         // 场景随鼠标移动晃动
@@ -50,10 +60,11 @@ class PartyScene extends Phaser.Scene {
             const dx = pointer.x - centerX;
             const dy = pointer.y - centerY;
             Object.entries(all_elements).forEach(([key, element]) => {
+                const { image, posX, posY } = all_instances[key];
                 const skew = element["skew"];
-                const newX = centerX - (dx * skew * intensityX);
-                const newY = centerY - (dy * skew * intensityY);
-                all_instances[key].setPosition(newX, newY);
+                const newX = posX - (dx * skew * intensityX);
+                const newY = posY - (dy * skew * intensityY);
+                image.setPosition(newX, newY);
             });
         });
     }
