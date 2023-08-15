@@ -20,8 +20,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import anime from "animejs";
-import confetti from "canvas-confetti"
-import PartyScene from "@/party"
+import confetti from "canvas-confetti";
+import PartyScene from "@/party";
 
 // stage (change in dialogAnimation):
 //  1. aige-dialog
@@ -29,7 +29,7 @@ import PartyScene from "@/party"
 //  3. unknown-dialog
 //  4. unknown-dialog过渡fans-dialog
 //  5. fans-dialog
-const stage = ref(1);
+const stage = ref(6);   // DEBUG
 const message = ref("预备... ");
 
 let countDown = 3;
@@ -40,11 +40,11 @@ function dialogAnimation(curr: string, next: string): void {
     const animationTime = 800;
 
     // 允许两张图同时存在来做转换动画
-    stage.value += 1
+    stage.value += 1;
 
     // 动画结束后更新状态
     setTimeout(() => {
-        stage.value += 1
+        stage.value += 1;
     }, animationTime);
 
     anime.timeline({}).add({
@@ -97,7 +97,7 @@ function confettiSuprise() {
         if (countDown === 0) {
             // 展示祝生快消息，放礼炮
             dialogAnimation("#unknown-dialog", "#fans-dialog");
-            shootConfetti()
+            shootConfetti();
 
             // 展示后3.5秒内点击消息框会无效
             setTimeout(() => {
@@ -135,17 +135,17 @@ onMounted(() => {
         parent: "party",
         fullscreenTarget: "app",
         disableContextMenu: true,
-        scale: {
+        scale: { 
             mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH,
-            // width: 1920,
-            // height: 937,
+            width: 2531,
+            height: 1488,
         },
-        backgroundColor: Phaser.Display.Color.RGBStringToColor("rgb(116, 116, 170)").color,
+        backgroundColor: Phaser.Display.Color.RGBStringToColor("rgb(234, 220, 255)").color,
         scene: partyScene
     });
 
-    partyGame.input.enabled = false;
+    // partyGame.input.enabled = false; // DEBUG
 });
 </script>
 

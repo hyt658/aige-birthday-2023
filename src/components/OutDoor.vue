@@ -12,21 +12,21 @@
 
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref } from "vue";
 import anime from "animejs";
 
-const doorState = ref("close")
+const doorState = ref("close");
 const emit = defineEmits<{(e: "changeStage"): void}>();
 
 function openDoor(): void {
     const animationTime = 1200;
 
     // 允许两张图同时存在来做开门转换动画
-    doorState.value = "opening"
+    doorState.value = "opening";
 
     // 动画结束后才更改状态
     setTimeout(() => {
-        doorState.value = "open"
+        doorState.value = "open";
     }, animationTime);
 
     // 开门（切图）和对话框动画
@@ -45,7 +45,7 @@ function openDoor(): void {
         opacity: 1,
         duration: animationTime,
         easing: "easeOutExpo",
-        complete: () => { enterRoom() }
+        complete: () => { enterRoom(); }
     }, 0);
 }
 
@@ -61,7 +61,7 @@ function enterRoom(): void {
             // 进入party阶段，1.2s作为缓冲
             setTimeout(() => { 
                 emit("changeStage"); 
-            }, 1200)
+            }, 1200);
         }
     }, 0);
 }

@@ -9,14 +9,15 @@
 
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref } from "vue";
 import AtBegin from "@/components/OutDoor.vue";
 import AtDoor from "@/components/AtParty.vue";
 
-const currStage = ref("outdoor");
+// const currStage = ref("outdoor");    // DEBUG
+const currStage = ref("party");
 
 function changeStage(): void {
-    currStage.value = "party"
+    currStage.value = "party";
 }
 </script>
 
@@ -34,7 +35,7 @@ html {
 
 body {
     margin: 0px;
-    background: rgb(116, 116, 170);
+    background: rgb(234, 220, 255);
     user-select: none;
 }
 
