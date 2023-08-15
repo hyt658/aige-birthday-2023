@@ -5,9 +5,10 @@ const all_elements = {
         skew: 1.5
     },
     HBDtext: {
-        dx: 0,
-        dy: 0,
-        skew: 1.5
+        dx: -910,
+        dy: -465,
+        skew: 1.5,
+        text: "祝福+贺词"
     },
     paint: {
         dx: -440,
