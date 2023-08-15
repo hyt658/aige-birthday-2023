@@ -15,7 +15,16 @@ import SofaImg from "@/assets/images/room/sofa.png";
 import TableImg from "@/assets/images/room/table.png";
 import TVImg from "@/assets/images/room/television.png";
 
+type Image = Phaser.GameObjects.Image
+type InstanceMap = {[key: string]: {
+    image: Image,
+    posX: number,
+    posY: number
+}};
+
 class PartyScene extends Phaser.Scene {
+    blowingCandles = false;
+
     preload() {
         this.load.image("aige", AigeImg);
         this.load.image("bed", BedImg);
@@ -33,25 +42,23 @@ class PartyScene extends Phaser.Scene {
     }
 
     create() {
-        // 定义元素实例字典类型
-        type instance_map = {[key: string]: {
-            image: Phaser.GameObjects.Image,
-            posX: number,
-            posY: number
-        }};
-
         const { width, height } = this.sys.game.canvas;
         const centerX = width / 2;
         const centerY = height / 2;
         const intensityX = 0.008;
         const intensityY = 0.004;
-        const all_instances: instance_map = {};
+        const all_instances: InstanceMap = {};
 
         // 填充实例字典
         Object.entries(all_elements).forEach(([key, element]) => {
             const posX = centerX + element["dx"];
             const posY = centerY + element["dy"];
             const image = this.add.image(posX, posY, key).setScale(1.05);
+            if ("text" in element) {
+                const text = element["text"];
+                this.mouseHoverEvent(image, key, text, posX, posY);
+            }
+            this.mouseClickEvent(image, key);
             all_instances[key] = { image, posX, posY };
         });      
 
@@ -67,6 +74,34 @@ class PartyScene extends Phaser.Scene {
                 image.setPosition(newX, newY);
             });
         });
+    }
+
+    mouseHoverEvent(image: Image, element: string, text: string, posX: number, posY: number) {
+        const label = this.add.text(posX, posY, text, {
+            fontFamily: "zhanku",
+            fontSize: 50,
+            color: "#FFFFFF",
+            stroke: "#BF99FF",
+            strokeThickness: 10,
+        }).setOrigin(0.5, 0.5).setVisible(false);
+        
+        image.setInteractive({ pixelPerfect: true }).on("pointerover", () => {
+            // 鼠标悬浮查看
+            const doInteract = ((element === "cake" && this.blowingCandles) || 
+                (element !== "cake" && !this.blowingCandles));
+            if (doInteract) {
+                image.setAngle((Math.random() * 3) - 1);
+                label.setAngle((Math.random() * 11) - 5).setVisible(true);
+            }
+        }).on('pointerout', () => {
+            // 挪开鼠标回复原状
+            image.setAngle(0);
+            label.setVisible(false);
+        });
+    }
+
+    mouseClickEvent(image: Image, element: string) {
+
     }
 }
 

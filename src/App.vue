@@ -24,7 +24,7 @@ function changeStage(): void {
 
 <style lang="scss">
 @font-face {
-    font-family: 'zhanku';
+    font-family: "zhanku";
     src: url("@/assets/fonts/zhanku.ttf");
 }
 
