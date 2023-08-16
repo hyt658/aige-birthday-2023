@@ -1,16 +1,28 @@
 <template>
-    <div id="overlay" v-show="stage<4"></div>
+    <div id="overlay" v-show="stage < 4"></div>
 
     <div id="party"></div>
-    <div id="aige-dialog" class="dialog" @click="confettiSuprise" v-show="stage<=2">
+    <v-dialog id="projects" v-model="isProjectOpen" maxWidth="700">
+        <v-card>
+            <AllCredit v-show="project === 'credit'"/>
+            <FanPaint v-show="project === 'paint'"/>
+            <FanVideo v-show="project === 'television'"/>
+            <MaidVideo v-show="project === 'maid_video'" />
+            <MCVideo v-show="project === 'minecraft'"/>
+            <QuestList v-show="project === 'quests'" :questStatus="questStatus" 
+                @closeProject="isProjectOpen = false"/>
+        </v-card>
+    </v-dialog>
+
+    <div id="aige-dialog" class="dialog" @click="confettiSuprise" v-show="stage <= 2">
         <img draggable="false" id="dialogBox" src="@/assets/images/dialog/dialog-aige.png" alt="艾鸽的对话框" />
         <div id="speak">嗯？好黑啊，我记得我没有把所有灯都关上呀？让我找找开关在哪...</div>
     </div>
-    <div id="unknown-dialog" class="dialog" v-show="(2<=stage)&&(stage<=4)">
+    <div id="unknown-dialog" class="dialog" v-show="(2 <= stage)&&(stage <= 4)">
         <img draggable="false" id="dialogBox" src="@/assets/images/dialog/dialog-unknown.png" alt="未知的对话框" />
         <div id="speak">{{ message }}</div>
     </div>
-    <div id="fans-dialog" class="dialog" @click="enterParty" v-show="stage>=4">
+    <div id="fans-dialog" class="dialog" @click="enterParty" v-show="stage >= 4">
         <img draggable="false" id="dialogBox" src="@/assets/images/dialog/dialog-fans.png" alt="宠鸽会的对话框" />
         <div id="speak">鸽宝，生日快乐！！</div>
     </div>
@@ -23,6 +35,14 @@ import anime from "animejs";
 import confetti from "canvas-confetti";
 import PartyScene from "@/party";
 
+import AllCredit from "@/components/projects/AllCredits.vue";
+import FanPaint from "@/components/projects/FanPaint.vue";
+import FanVideo from "@/components/projects/FanVideo.vue";
+import MaidVideo from "@/components/projects/MaidVideo.vue";
+import MCVideo from "@/components/projects/MCVideo.vue";
+import QuestList from "@/components/projects/QuestList.vue";
+import { watch } from "vue";
+
 // stage (change in dialogAnimation):
 //  1. aige-dialog
 //  2. aige-dialog过渡unknown-dialog
@@ -31,6 +51,17 @@ import PartyScene from "@/party";
 //  5. fans-dialog
 const stage = ref(6);   // DEBUG
 const message = ref("预备... ");
+const project = ref("none");
+const isProjectOpen = ref(false);
+
+const questStatus: {[key: string]: boolean} = {
+    music: false,
+    paint: false,
+    maid_video: false,
+    television: false,
+    minecraft: false,
+    credit: false
+};
 
 let countDown = 3;
 let allowClick = false;
@@ -142,11 +173,39 @@ onMounted(() => {
             height: 1488,
         },
         backgroundColor: Phaser.Display.Color.RGBStringToColor("rgb(234, 220, 255)").color,
-        scene: partyScene
+        scene: partyScene,
+        callbacks: {
+            postBoot: () => {
+                // 此处接收partyScene中元素点击事件
+                partyScene.events.on("elementClicked", (clickedProject: string) => {
+                    // 更换收音机音乐没有弹窗
+                    if (clickedProject !== "music") {
+                        project.value = clickedProject;
+                        isProjectOpen.value = true;
+                        // project窗口打开的时候禁止游戏互动
+                        partyGame.input.enabled = false;
+                    }
+
+                    // quest本身不计入questStatus中
+                    if (clickedProject !== "quests") {
+                        questStatus[clickedProject] = true;
+                    }
+                });
+            }
+        }
     });
 
+    // 刚开始禁止互动，等过完对话后允许
     // partyGame.input.enabled = false; // DEBUG
 });
+
+// 没有project窗口打开的时候恢复游戏互动
+watch(isProjectOpen, (newVal) => {
+    if (newVal === false) {
+        partyGame.input.enabled = true;
+    }
+});
+
 </script>
 
 

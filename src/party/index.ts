@@ -55,10 +55,11 @@ class PartyScene extends Phaser.Scene {
             const posY = centerY + element["dy"];
             const image = this.add.image(posX, posY, key).setScale(1.05);
             if ("text" in element) {
+                // 可交互的元素
                 const text = element["text"];
                 this.mouseHoverEvent(image, key, text, posX, posY);
+                this.mouseClickEvent(image, key);
             }
-            this.mouseClickEvent(image, key);
             all_instances[key] = { image, posX, posY };
         });      
 
@@ -101,7 +102,21 @@ class PartyScene extends Phaser.Scene {
     }
 
     mouseClickEvent(image: Image, element: string) {
-
+        // 鼠标点击后发出Phaser事件，AtParty组件可以接收事件并进行相对应操作
+        image.setInteractive({ pixelPerfect: true }).on("pointerdown", () => {
+            if (element !== "cake") {
+                const elementToProject: {[key: string]: string} = {
+                    radio: "music",
+                    HBDtext: "maid_video",
+                    paint: "paint",
+                    calender: "quests",
+                    television: "television",
+                    fufu: "credit",
+                    minecraft: "minecraft"
+                };
+                this.events.emit("elementClicked", elementToProject[element]);
+            } 
+        });
     }
 }
 

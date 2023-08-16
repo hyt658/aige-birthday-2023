@@ -15,7 +15,8 @@
     "animejs": "^3.2.1",
     "canvas-confetti": "^1.6.0",
     "phaser": "^3.60.0",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "vuetify": "^3.3.13"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",

@@ -16,7 +16,7 @@ import { ref } from "vue";
 import anime from "animejs";
 
 const doorState = ref("close");
-const emit = defineEmits<{(e: "changeStage"): void}>();
+const emit = defineEmits(["changeStage"]);
 
 function openDoor(): void {
     const animationTime = 1200;

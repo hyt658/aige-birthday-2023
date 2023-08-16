@@ -1,17 +1,17 @@
 <template>
     <div id="AtBgein" class="stage" v-if="currStage === 'outdoor'">
-        <AtBegin @changeStage="changeStage" />
+        <OutDoor @changeStage="changeStage" />
     </div>
     <div id="AtDoor" class="stage" v-else>
-        <AtDoor />
+        <AtParty />
     </div>
 </template>
 
 
 <script setup lang="ts">
 import { ref } from "vue";
-import AtBegin from "@/components/OutDoor.vue";
-import AtDoor from "@/components/AtParty.vue";
+import OutDoor from "@/components/OutDoor.vue";
+import AtParty from "@/components/AtParty.vue";
 
 // const currStage = ref("outdoor");    // DEBUG
 const currStage = ref("party");
