@@ -1,10 +1,10 @@
 <template>
 <div id="QuestsList">
-    <div class="title">
-        <h1>要完成的事件</h1>
-        <h2>完成所有事件后有特殊事件哦，记得回来查看！</h2>
+    <div id="title">
+        <h1>要完成的任务</h1>
+        <h2>完成所有任务后有特殊场景哦，记得回来查看！</h2>
     </div>
-    <div class="content">
+    <div id="content">
         <ul>
             <li v-for="(value, project) in questStatus" :key="project">
                 <input type="checkbox" :checked="value" onclick="return false"/>
@@ -12,14 +12,22 @@
             </li>
         </ul>
     </div>
-    <button class="close-button" @click="emit('closeProject')">关闭</button>
+    <div id="finish" v-if="checked">
+        恭喜你完成所有任务，准备吹蜡烛吧！
+    </div>
+    <button id="close-btn" class="close-button" 
+        @click="emit('closeProject')" v-if="!checked">关闭</button>
+    <button id="blow-candel" class="close-button" 
+        @click="emit('readyToBlowCandels')" v-else>吹蜡烛</button>
 </div>
 </template>
 
 
 <script setup lang="ts">
-defineProps({questStatus: Object});
-const emit = defineEmits(["closeProject"]);
+import { questStatus } from "@/party";
+
+const emit = defineEmits(["closeProject", "readyToBlowCandels"]);
+const checked = Object.values(questStatus).every(value => value);
 const questDesciption: {[key: string]: string} = {
     music: "尝试更换BGM",
     paint: "查看宠鸽会的生日贺图",
@@ -28,16 +36,16 @@ const questDesciption: {[key: string]: string} = {
     minecraft: "查看桌上的草方块",
     credit: "查看鸣谢名单"
 };
-
 </script>
 
 
 <style lang="scss" scoped>
-.title {
+#title {
   text-align: center;
   padding: 20px 0;
   background-color: #f7f7f7;
   border-bottom: 2px solid #e0e0e0;
+  font-family: "zhanku";
 
   h1 {
     font-size: 2em;
@@ -51,9 +59,10 @@ const questDesciption: {[key: string]: string} = {
   }
 }
 
-.content {
+#content {
     padding: 20px;
     background-color: #fff;
+    font-family: "zhanku";
 
     ul {
         list-style-type: none;
@@ -80,7 +89,14 @@ const questDesciption: {[key: string]: string} = {
     }
 }
 
+#finish {
+    text-align: center;
+    font-size: 1.5em;
+    font-family: "zhanku";
+}
+
 .close-button {
+    font-family: "zhanku";
     display: block;
     width: calc(100% - 40px); // 减去左右的边距
     margin: 20px auto;

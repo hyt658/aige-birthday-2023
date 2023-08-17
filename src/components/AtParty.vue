@@ -3,14 +3,14 @@
 
     <div id="party"></div>
     <v-dialog id="projects" v-model="isProjectOpen" maxWidth="700">
-        <v-card>
-            <AllCredit v-show="project === 'credit'"/>
-            <FanPaint v-show="project === 'paint'"/>
-            <FanVideo v-show="project === 'television'"/>
-            <MaidVideo v-show="project === 'maid_video'" />
-            <MCVideo v-show="project === 'minecraft'"/>
-            <QuestList v-show="project === 'quests'" :questStatus="questStatus" 
-                @closeProject="isProjectOpen = false"/>
+        <v-card id="cards">
+            <AllCredit v-if="project === 'credit'" />
+            <FanPaint v-else-if="project === 'paint'" />
+            <FanVideo v-else-if="project === 'television'" />
+            <MaidVideo v-else-if="project === 'maid_video'" />
+            <MCVideo v-else-if="project === 'minecraft'" />
+            <QuestList v-else-if="project === 'quests'" @closeProject="isProjectOpen = false"
+                @readyToBlowCandels="readyToBlowCandels" />
         </v-card>
     </v-dialog>
 
@@ -30,10 +30,10 @@
   
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import anime from "animejs";
 import confetti from "canvas-confetti";
-import PartyScene from "@/party";
+import { PartyScene } from "@/party";
 
 import AllCredit from "@/components/projects/AllCredits.vue";
 import FanPaint from "@/components/projects/FanPaint.vue";
@@ -41,7 +41,6 @@ import FanVideo from "@/components/projects/FanVideo.vue";
 import MaidVideo from "@/components/projects/MaidVideo.vue";
 import MCVideo from "@/components/projects/MCVideo.vue";
 import QuestList from "@/components/projects/QuestList.vue";
-import { watch } from "vue";
 
 // stage (change in dialogAnimation):
 //  1. aige-dialog
@@ -51,20 +50,12 @@ import { watch } from "vue";
 //  5. fans-dialog
 const stage = ref(6);   // DEBUG
 const message = ref("预备... ");
-const project = ref("none");
 const isProjectOpen = ref(false);
-
-const questStatus: {[key: string]: boolean} = {
-    music: false,
-    paint: false,
-    maid_video: false,
-    television: false,
-    minecraft: false,
-    credit: false
-};
+const project = ref("none");
 
 let countDown = 3;
 let allowClick = false;
+let partyScene: PartyScene;
 let partyGame: Phaser.Game;
 
 function dialogAnimation(curr: string, next: string): void {
@@ -159,8 +150,13 @@ function enterParty() {
     }
 }
 
+function readyToBlowCandels() {
+    partyScene.readyToBlowCandels();
+    isProjectOpen.value = false;
+}
+
 onMounted(() => {
-    const partyScene = new PartyScene({key: "party"});
+    partyScene = new PartyScene({key: "party"});
     partyGame = new Phaser.Game({
         type: Phaser.AUTO,
         parent: "party",
@@ -185,11 +181,6 @@ onMounted(() => {
                         // project窗口打开的时候禁止游戏互动
                         partyGame.input.enabled = false;
                     }
-
-                    // quest本身不计入questStatus中
-                    if (clickedProject !== "quests") {
-                        questStatus[clickedProject] = true;
-                    }
                 });
             }
         }
@@ -199,13 +190,12 @@ onMounted(() => {
     // partyGame.input.enabled = false; // DEBUG
 });
 
-// 没有project窗口打开的时候恢复游戏互动
+// 没有project窗口打开的时候恢复游戏互动，更新鼠标位置
 watch(isProjectOpen, (newVal) => {
     if (newVal === false) {
         partyGame.input.enabled = true;
     }
 });
-
 </script>
 
 

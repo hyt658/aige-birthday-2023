@@ -1,4 +1,4 @@
-const all_elements = {
+const elements = {
     room: {
         dx: 0,
         dy: 0,
@@ -74,4 +74,4 @@ const all_elements = {
     }
 };
 
-export default all_elements;
+export default elements;
