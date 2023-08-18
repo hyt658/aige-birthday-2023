@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import elements from "./elements";
+import shootConfetti from "@/party/confetti";
 
 import AigeImg from "@/assets/images/room/aige.png";
 import BedImg from "@/assets/images/room/bed.png";
@@ -14,6 +15,12 @@ import RoomImg from "@/assets/images/room/room.png";
 import SofaImg from "@/assets/images/room/sofa.png";
 import TableImg from "@/assets/images/room/table.png";
 import TVImg from "@/assets/images/room/television.png";
+
+import HaiDiLaoSong from "@/assets/audio/hai_di_lao.wav";
+import BlowSound from "@/assets/audio/blow_sound.mp3";
+import HBDSong from "@/assets/audio/birthday_song_sing.wav";
+import HBDBgm from "@/assets/audio/birthday_song_bgm.wav";
+import ConfettiSound from "@/assets/audio/confetti.mp3";
 
 type Image = Phaser.GameObjects.Image
 type InstanceMap = {[key: string]: {
@@ -34,6 +41,8 @@ export const questStatus: {[key: string]: boolean} = {
 
 export class PartyScene extends Phaser.Scene {
     blowingCandles = false;
+    HBDSongDone = false;
+    bgm = "haiDiLaoSong";
     instances: InstanceMap = {};
 
     preload() {
@@ -50,6 +59,12 @@ export class PartyScene extends Phaser.Scene {
         this.load.image("table", TableImg);
         this.load.image("television", TVImg);
         this.load.image("room", RoomImg);
+
+        this.load.audio("haiDiLaoSong", HaiDiLaoSong);
+        this.load.audio("blowSound", BlowSound);
+        this.load.audio("HBDSong", HBDSong);
+        this.load.audio("HBDBgm", HBDBgm);
+        this.load.audio("confettiSound", ConfettiSound);
     }
 
     create() {
@@ -74,11 +89,12 @@ export class PartyScene extends Phaser.Scene {
             this.instances[key] = { image, posX, posY, interactable };
         });      
 
-        // 场景随鼠标移动晃动 
-        this.input.on("pointermove", (pointer: Phaser.Input.Pointer) => {
+        // 场景随鼠标移动晃动，使用document的监听是因为不喜欢v-dialog阻止phaser获取鼠标事件
+        document.addEventListener("mousemove", (event: MouseEvent) => {
+            const dx = event.clientX;
+            const dy = event.clientY;
+            
             if (!this.blowingCandles) {
-                const dx = pointer.x - centerX;
-                const dy = pointer.y - centerY;
                 Object.entries(elements).forEach(([key, element]) => {
                     const { image, posX, posY } = this.instances[key];
                     const skew = element["skew"];
@@ -95,6 +111,9 @@ export class PartyScene extends Phaser.Scene {
         this.lights.addLight(width*0.494, height*0.55, 80, 0xffffff, 2);
         this.lights.addLight(width*0.468, height*0.56, 80, 0xffffff, 2);
         this.lights.addLight(width*0.523, height*0.56, 80, 0xffffff, 2);
+
+        // 初始bgm
+        this.sound.add(this.bgm).setVolume(0.2).setLoop(true).play();
     }
 
     mouseHoverEvent(image: Image, element: string, text: string, posX: number, posY: number) {
@@ -108,8 +127,8 @@ export class PartyScene extends Phaser.Scene {
         
         image.setInteractive({ pixelPerfect: true }).on("pointerover", () => {
             // 鼠标悬浮查看
-            const doInteract = ((element === "cake" && this.blowingCandles) || 
-                (element !== "cake" && !this.blowingCandles));
+            const doInteract = ((element !== "cake" && !this.blowingCandles) || 
+                (element === "cake" && this.blowingCandles && this.HBDSongDone));
             if (doInteract) {
                 image.setAngle((Math.random() * 3) - 1);
                 label.setAngle((Math.random() * 11) - 5).setVisible(true);
@@ -124,7 +143,7 @@ export class PartyScene extends Phaser.Scene {
     mouseClickEvent(image: Image, element: string) {
         image.setInteractive({ pixelPerfect: true }).on("pointerdown", () => {
             if (element !== "cake" && !this.blowingCandles) {
-                // 吹蜡烛前，鼠标点击非蛋糕元素后发出Phaser事件，AtParty组件可以接收事件并进行相对应操作
+                // 吹蜡烛前，只能点击非蛋糕元素，记录是否被点击
                 const elementToProject: {[key: string]: string} = {
                     radio: "music",
                     HBDtext: "maid_video",
@@ -137,38 +156,87 @@ export class PartyScene extends Phaser.Scene {
                 const project = elementToProject[element];
 
                 // quest本身不计入questStatus中
-                if (project !== "quests") { questStatus[project] = true; } 
-                // 通知AtParty组件展示相对应的project子组件
-                this.events.emit("elementClicked", project);
+                if (project !== "quests") { 
+                    questStatus[project] = true; 
+                } 
+                
+                if (element !== "radio") {
+                    // 点击非收音机元素通知AtParty组件展示相对应的project子组件
+                    this.events.emit("openProject", project);
+                    image.emit("pointerout");
+                    // 展示子组件的时候禁用游戏输入
+                    this.game.input.enabled = false;
+                } else {
+                    // 收音机元素
+                }
+
+                // 查看视频project的话暂停bgm
+                const vedioProjects = ["maid_video", "television", "minecraft"];
+                if (vedioProjects.indexOf(project) != -1) {
+                    this.sound.get(this.bgm).pause();
+                }
             } else if (element === "cake" && this.blowingCandles) {
-                this.blowCandels();
+                // 吹蜡烛的时候，等生日歌放完后，只能点击蛋糕来吹蜡烛
+                if (this.HBDSongDone) {
+                    this.blowCandels();
+                }
             }
         });
     }
 
-    // 当完成所有quest后，在QuestList中出现吹蜡烛按钮，点击那个按钮后进入吹蜡烛模式
+    backToGame() {
+        // 恢复游戏输入互动
+        this.game.input.enabled = true;
+        // 继续播放bgm
+        const currentBgm = this.sound.get(this.bgm);
+        if (currentBgm.isPaused) {
+            currentBgm.resume();
+        }
+    }
+
+    // 当完成所有quest后，在QuestList中出现吹蜡烛按钮，点击那个按钮后进入吹蜡烛模式，开始放生日歌
     readyToBlowCandels() {
         this.blowingCandles = true;
         Object.values(this.instances).forEach(({ image, posX, posY }) => {
             // 开启光照效果
             image.setPipeline("Light2D");
-            // 将所有样子恢复成挪开鼠标的状态
-            image.emit("pointerout");
             // 重置所有元素的位置
             image.setPosition(posX, posY);
         });
         this.lights.enable();
 
+        // 停止原bgm，放生日歌
+        this.sound.get(this.bgm).stop();
+        const HBDSongPlay = this.sound.add("HBDSong").setVolume(0.4);
+        HBDSongPlay.play();
+        HBDSongPlay.on("complete", () => { 
+            // 允许点蛋糕吹蜡烛
+            this.HBDSongDone = true; 
+        });
     }
 
-    // 吹蜡烛的时候，只能点击蛋糕，放生日歌，许愿，最后吹蜡烛
     blowCandels() {
-        this.blowingCandles = false;
-        Object.values(this.instances).forEach(({ image }) => {
-            // 关闭光照效果
-            image.setPipeline("MultiPipeline");
+        // 先播放吹蜡烛的声音
+        const blowSoundPlay = this.sound.add("blowSound").setVolume(0.7);
+        blowSoundPlay.play();
+        blowSoundPlay.on("complete", () => {
+            // 结束后吹蜡烛，放拉炮
+            this.blowingCandles = false;
+            Object.values(this.instances).forEach(({ image }) => {
+                // 关闭光照效果
+                image.setPipeline("MultiPipeline");
+            });
+            this.lights.enable();
+            this.sound.add("confettiSound").setVolume(0.7).play();
+            shootConfetti();
+
+            // 最后将bgm定死在生日歌
+            this.bgm = "HBDBgm";
+            setTimeout(() => {
+                this.sound.add(this.bgm).setVolume(0.2).setLoop(true).play();
+            }, 1000);
+            
         });
-        this.lights.enable();
     }
 }
 

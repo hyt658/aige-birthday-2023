@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
 import anime from "animejs";
-import confetti from "canvas-confetti";
+import shootConfetti from "@/party/confetti"; 
 import { PartyScene } from "@/party";
 
 import AllCredit from "@/components/projects/AllCredits.vue";
@@ -80,34 +80,6 @@ function dialogAnimation(curr: string, next: string): void {
         duration: animationTime,
         easing: "easeOutExpo",
     }, 0);
-}
-
-function shootConfetti() {
-    const adjust_degree = 5;
-    let left_angle = 60;
-    let right_angke = 120;
-
-    // 数组代表y轴高度的百分比
-    for (let y_loc of [0.25, 0.375, 0.5, 0.625, 0.75]) {
-        // 左侧礼炮
-        confetti({
-            particleCount: 200,
-            angle: left_angle,
-            spread: 55,
-            origin: { x: 0, y: y_loc }
-        });
-
-        // 右侧礼炮
-        confetti({
-            particleCount: 200,
-            angle: right_angke,
-            spread: 55,
-            origin: { x: 1, y: y_loc }
-        });
-
-        left_angle -= adjust_degree;
-        right_angke += adjust_degree;
-    }
 }
 
 function confettiSuprise() {
@@ -173,27 +145,22 @@ onMounted(() => {
         callbacks: {
             postBoot: () => {
                 // 此处接收partyScene中元素点击事件
-                partyScene.events.on("elementClicked", (clickedProject: string) => {
-                    // 更换收音机音乐没有弹窗
-                    if (clickedProject !== "music") {
-                        project.value = clickedProject;
-                        isProjectOpen.value = true;
-                        // project窗口打开的时候禁止游戏互动
-                        partyGame.input.enabled = false;
-                    }
+                partyScene.events.on("openProject", (clickedProject: string) => {
+                    project.value = clickedProject;
+                    isProjectOpen.value = true;
                 });
             }
         }
     });
 
     // 刚开始禁止互动，等过完对话后允许
-    // partyGame.input.enabled = false; // DEBUG
+    // partyGame.input.enabled = false;   DEBUG
 });
 
-// 没有project窗口打开的时候恢复游戏互动，更新鼠标位置
+// 没有project窗口打开的时候通知Phaser恢复游戏互动
 watch(isProjectOpen, (newVal) => {
     if (newVal === false) {
-        partyGame.input.enabled = true;
+        partyScene.backToGame();
     }
 });
 </script>
