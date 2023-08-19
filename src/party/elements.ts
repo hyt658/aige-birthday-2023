@@ -4,7 +4,7 @@ const elements = {
         dy: 0,
         skew: 1.5
     },
-    HBDtext: {
+    maidVideo: {
         dx: -910,
         dy: -465,
         skew: 1.5,
@@ -22,7 +22,7 @@ const elements = {
         skew: 1.3,
         text: "BGM"
     },
-    calender: {
+    quests: {
         dx: 835,
         dy: -410,
         skew: 1.3,
@@ -54,7 +54,7 @@ const elements = {
         dy: 0,
         skew: -0.3
     },
-    fufu: {
+    credit: {
         dx: 310,
         dy: 240,
         skew: -0.45,

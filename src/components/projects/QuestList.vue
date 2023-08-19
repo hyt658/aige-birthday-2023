@@ -29,9 +29,9 @@ import { questStatus } from "@/party";
 const emit = defineEmits(["closeProject", "readyToBlowCandels"]);
 const checked = Object.values(questStatus).every(value => value);
 const questDesciption: {[key: string]: string} = {
-    music: "尝试更换BGM",
+    radio: "尝试更换BGM",
     paint: "查看宠鸽会的生日贺图",
-    maid_video: "观看祝福+贺词视频",
+    maidVideo: "观看祝福+贺词视频",
     television: "看电视",
     minecraft: "查看桌上的草方块",
     credit: "查看鸣谢名单"

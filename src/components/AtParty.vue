@@ -7,7 +7,7 @@
             <AllCredit v-if="project === 'credit'" />
             <FanPaint v-else-if="project === 'paint'" />
             <FanVideo v-else-if="project === 'television'" />
-            <MaidVideo v-else-if="project === 'maid_video'" />
+            <MaidVideo v-else-if="project === 'maidVideo'" />
             <MCVideo v-else-if="project === 'minecraft'" />
             <QuestList v-else-if="project === 'quests'" @closeProject="isProjectOpen = false"
                 @readyToBlowCandels="readyToBlowCandels" />

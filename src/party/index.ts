@@ -31,9 +31,9 @@ type InstanceMap = {[key: string]: {
 }};
 
 export const questStatus: {[key: string]: boolean} = {
-    music: false,
+    radio: false,
     paint: false,
-    maid_video: false,
+    maidVideo: false,
     television: false,
     minecraft: false,
     credit: false
@@ -49,9 +49,9 @@ export class PartyScene extends Phaser.Scene {
         this.load.image("aige", AigeImg);
         this.load.image("bed", BedImg);
         this.load.image("cake", CakeImg);
-        this.load.image("calender", CalenderImg);
-        this.load.image("fufu", FufuImg);
-        this.load.image("HBDtext", HBDTextImg);
+        this.load.image("quests", CalenderImg);
+        this.load.image("credit", FufuImg);
+        this.load.image("maidVideo", HBDTextImg);
         this.load.image("minecraft", MCImg);
         this.load.image("paint", PaintImg);
         this.load.image("radio", RadioImg);
@@ -113,7 +113,7 @@ export class PartyScene extends Phaser.Scene {
         this.lights.addLight(width*0.523, height*0.56, 80, 0xffffff, 2);
 
         // 初始bgm
-        this.sound.add(this.bgm).setVolume(0.2).setLoop(true).play();
+        this.sound.add(this.bgm).setVolume(0.3).setLoop(true).play();
     }
 
     mouseHoverEvent(image: Image, element: string, text: string, posX: number, posY: number) {
@@ -144,25 +144,14 @@ export class PartyScene extends Phaser.Scene {
         image.setInteractive({ pixelPerfect: true }).on("pointerdown", () => {
             if (element !== "cake" && !this.blowingCandles) {
                 // 吹蜡烛前，只能点击非蛋糕元素，记录是否被点击
-                const elementToProject: {[key: string]: string} = {
-                    radio: "music",
-                    HBDtext: "maid_video",
-                    paint: "paint",
-                    calender: "quests",
-                    television: "television",
-                    fufu: "credit",
-                    minecraft: "minecraft"
-                };
-                const project = elementToProject[element];
-
                 // quest本身不计入questStatus中
-                if (project !== "quests") { 
-                    questStatus[project] = true; 
+                if (element !== "quests") { 
+                    questStatus[element] = true; 
                 } 
                 
                 if (element !== "radio") {
                     // 点击非收音机元素通知AtParty组件展示相对应的project子组件
-                    this.events.emit("openProject", project);
+                    this.events.emit("openProject", element);
                     image.emit("pointerout");
                     // 展示子组件的时候禁用游戏输入
                     this.game.input.enabled = false;
@@ -171,8 +160,8 @@ export class PartyScene extends Phaser.Scene {
                 }
 
                 // 查看视频project的话暂停bgm
-                const vedioProjects = ["maid_video", "television", "minecraft"];
-                if (vedioProjects.indexOf(project) != -1) {
+                const vedioProjects = ["maidVideo", "television", "minecraft"];
+                if (vedioProjects.indexOf(element) != -1) {
                     this.sound.get(this.bgm).pause();
                 }
             } else if (element === "cake" && this.blowingCandles) {
@@ -205,9 +194,12 @@ export class PartyScene extends Phaser.Scene {
         });
         this.lights.enable();
 
-        // 停止原bgm，放生日歌
+        // 停止原bgm，1秒后放生日歌
         this.sound.get(this.bgm).stop();
         const HBDSongPlay = this.sound.add("HBDSong").setVolume(0.4);
+        setTimeout(() => {
+            HBDSongPlay.play();
+        }, 1000);
         HBDSongPlay.play();
         HBDSongPlay.on("complete", () => { 
             // 允许点蛋糕吹蜡烛
@@ -233,7 +225,7 @@ export class PartyScene extends Phaser.Scene {
             // 最后将bgm定死在生日歌
             this.bgm = "HBDBgm";
             setTimeout(() => {
-                this.sound.add(this.bgm).setVolume(0.2).setLoop(true).play();
+                this.sound.add(this.bgm).setVolume(0.3).setLoop(true).play();
             }, 1000);
             
         });
