@@ -41,22 +41,22 @@ const questDesciption: {[key: string]: string} = {
 
 <style lang="scss" scoped>
 #title {
-  text-align: center;
-  padding: 20px 0;
-  background-color: #f7f7f7;
-  border-bottom: 2px solid #e0e0e0;
-  font-family: "zhanku";
+    text-align: center;
+    padding: 20px 0;
+    background-color: #f7f7f7;
+    border-bottom: 2px solid #e0e0e0;
+    font-family: "zhanku";
 
-  h1 {
-    font-size: 2em;
-    color: #333;
-    margin-bottom: 10px;
-  }
+    h1 {
+        font-size: 2em;
+        color: #333;
+        margin-bottom: 10px;
+    }
 
-  h2 {
-    font-size: 1.5em;
-    color: #777;
-  }
+    h2 {
+        font-size: 1.5em;
+        color: #777;
+    }
 }
 
 #content {
@@ -98,11 +98,11 @@ const questDesciption: {[key: string]: string} = {
 .close-button {
     font-family: "zhanku";
     display: block;
-    width: calc(100% - 40px); // 减去左右的边距
+    width: calc(100% - 40px);
     margin: 20px auto;
     padding: 10px 0;
     text-align: center;
-    background-color: #d1bce3; // 淡紫色背景
+    background-color: #d1bce3;
     color: white;
     border: none;
     border-radius: 5px;
@@ -110,7 +110,7 @@ const questDesciption: {[key: string]: string} = {
     transition: background-color 0.3s;
 
     &:hover {
-        background-color: #bfa2d0; // 深一点的紫色
+        background-color: #bfa2d0;
     }
 }
 </style>
