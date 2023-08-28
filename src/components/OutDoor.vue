@@ -1,7 +1,7 @@
 <template> 
-    <img draggable="false" id="doorClose" src="@/assets/images/door/doorClose.jpg" 
+    <img draggable="false" id="doorClose" src="@/assets/images/door/doorClose.png" 
         alt="艾鸽的房门" @click.once="openDoor" v-show="doorState !== 'open'" />
-    <img draggable="false" id="doorOpen" src="@/assets/images/door/doorOpen.jpg" 
+    <img draggable="false" id="doorOpen" src="@/assets/images/door/doorOpen.png" 
         alt="艾鸽的房门（开）" v-show="doorState !== 'close'"/> 
 
     <div id="dialog" class="dialog" @click.once="openDoor">
@@ -71,10 +71,12 @@ function enterRoom(): void {
 <style lang="scss" scoped>
 #doorClose {
     position: absolute;
+    scale: 0.35;
 }
 
 #doorOpen {
     position: absolute;
     opacity: 0;
+    scale: 0.35;
 }
 </style>
