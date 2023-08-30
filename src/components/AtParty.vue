@@ -2,14 +2,14 @@
     <div id="overlay" v-show="stage < 4"></div>
 
     <div id="party"></div>
-    <v-dialog id="projects" v-model="isProjectOpen" maxWidth="700">
-        <v-card id="cards">
-            <AllCredit v-if="project === 'credit'" />
-            <FanPaint v-else-if="project === 'paint'" />
-            <FanVideo v-else-if="project === 'television'" />
-            <MaidVideo v-else-if="project === 'maidVideo'" />
-            <MCVideo v-else-if="project === 'minecraft'" />
-            <QuestList v-else-if="project === 'quests'" @closeProject="isProjectOpen = false"
+    <v-dialog id="projects" v-model="isProjectOpen" maxWidth="80%">
+        <v-card id="cards" height="100vh">
+            <AllCredit v-if="project === 'credit'" @closeProject="closeProject"/>
+            <FanPaint v-else-if="project === 'paint'" @closeProject="closeProject"/>
+            <FanVideo v-else-if="project === 'television'" @closeProject="closeProject"/>
+            <MaidVideo v-else-if="project === 'maidVideo'" @closeProject="closeProject"/>
+            <MCVideo v-else-if="project === 'minecraft'" @closeProject="closeProject"/>
+            <QuestList v-else-if="project === 'quests'" @closeProject="closeProject"
                 @readyToBlowCandels="readyToBlowCandels" />
         </v-card>
     </v-dialog>
@@ -120,6 +120,10 @@ function enterParty() {
             }
         }, 0);
     }
+}
+
+function closeProject() {
+    isProjectOpen.value = false;
 }
 
 function readyToBlowCandels() {
