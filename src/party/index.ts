@@ -21,6 +21,7 @@ import BlowSound from "@/assets/audio/blow_sound.mp3";
 import HBDSong from "@/assets/audio/birthday_song_sing.wav";
 import HBDBgm from "@/assets/audio/birthday_song_bgm.wav";
 import ConfettiSound from "@/assets/audio/confetti.mp3";
+import JiangFengSong from "@/assets/audio/jiang_feng_song.aac";
 
 type Image = Phaser.GameObjects.Image
 type InstanceMap = {[key: string]: {
@@ -65,6 +66,7 @@ export class PartyScene extends Phaser.Scene {
         this.load.audio("HBDSong", HBDSong);
         this.load.audio("HBDBgm", HBDBgm);
         this.load.audio("confettiSound", ConfettiSound);
+        this.load.audio("jiangFengSong", JiangFengSong);
     }
 
     create() {
@@ -157,6 +159,14 @@ export class PartyScene extends Phaser.Scene {
                     this.game.input.enabled = false;
                 } else {
                     // 收音机元素
+                    const currentBgm = this.sound.get(this.bgm);
+                    const radioSong = this.sound.add("jiangFengSong").setVolume(0.4);
+
+                    currentBgm.pause();
+                    radioSong.play();
+                    radioSong.on("complete", () => {
+                        setTimeout(()=>{currentBgm.play();}, 1000);
+                    });
                 }
 
                 // 查看视频project的话暂停bgm

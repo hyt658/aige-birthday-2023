@@ -20,7 +20,7 @@ const elements = {
         dx: 374,
         dy: -398,
         skew: 1.3,
-        text: "BGM"
+        text: "音乐"
     },
     quests: {
         dx: 835,
