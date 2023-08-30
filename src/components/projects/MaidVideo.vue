@@ -1,3 +1,62 @@
 <template>
-    
+    <div id="content">
+        <h1>超可爱的祝福快来看!!</h1>
+        <h2>by 天海言言</h2>
+        <video controls poster="@/assets/video/video_poster.jpg" 
+            src="@/assets/video/maid_blessing.mp4" alt="言言的(?)祝福视频"></video>
+    </div>
+    <div id="close-btn" @click="emit('closeProject')">关闭</div>
 </template>
+
+
+<script lang="ts" setup>
+const emit = defineEmits(["closeProject"]);
+</script>
+
+
+<style lang="scss" scoped>
+#content {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: "zhanku";
+
+    h1 {
+        font-size: 2em;
+        color: #333;
+    }
+
+    h2 {
+        font-size: 1.5em;
+        color: #555;
+        margin-bottom: 30px;
+    }
+
+    video {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+}
+
+#close-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #d1bce3;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: "zhanku";
+
+    &:hover {
+        background-color: #bfa2d0;
+    }
+}
+</style>

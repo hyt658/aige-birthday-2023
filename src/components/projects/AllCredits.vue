@@ -3,6 +3,7 @@
         <h1>特别鸣谢</h1>
         <h2>感谢一下宠鸽会成员做出的贡献！（名词不分前后）</h2>
     </div>
+    <div id="close-btn" @click="emit('closeProject')">关闭</div>
     <div id="content">
         <h3>祝福+贺词视频</h3>
         <p>天海言言</p>
@@ -22,6 +23,11 @@
         <p>hyt658</p>
     </div>
 </template>
+
+
+<script lang="ts" setup>
+const emit = defineEmits(["closeProject"]);
+</script>
 
 
 <style lang="scss" scoped>
@@ -73,6 +79,25 @@
         color: #555;
         margin-top: 10px;
         }
+    }
+}
+
+#close-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #d1bce3;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: "zhanku";
+
+    &:hover {
+        background-color: #bfa2d0;
     }
 }
 </style>
