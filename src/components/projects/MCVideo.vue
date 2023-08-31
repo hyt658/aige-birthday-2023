@@ -1,7 +1,9 @@
 <template>
-    <div id="content">
+    <div id="title">
         <h1>什么,是新的MC视频?!</h1>
         <h2>by hyt658</h2>
+    </div>
+    <div id="content">
         <video controls :poster="Poster" :src="MCVideo" alt="hyt的MC视频"></video>
     </div>
     <div id="close-btn" @click="emit('closeProject')">关闭</div>
@@ -17,24 +19,32 @@ const emit = defineEmits(["closeProject"]);
 
 
 <style lang="scss" scoped>
-#content {
+#title {
     text-align: center;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px 0;
+    background-color: #f7f7f7;
+    border-bottom: 2px solid #e0e0e0;
     font-family: "zhanku";
 
     h1 {
         font-size: 2em;
         color: #333;
+        margin-bottom: 10px;
     }
 
     h2 {
         font-size: 1.5em;
-        color: #555;
-        margin-bottom: 30px;
+        color: #777;
     }
+}
+
+#content {
+    text-align: center;
+    padding: 30px 20px;  // 增加了上下的间距
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: "zhanku";
 
     video {
         width: 100%;
