@@ -2,14 +2,16 @@
     <div id="content">
         <h1>什么,是新的MC视频?!</h1>
         <h2>by hyt658</h2>
-        <video controls poster="@/assets/video/video_poster.jpg"
-            src="@/assets/video/minecraft.mp4" alt="hyt的MC视频"></video>
+        <video controls :poster="Poster" :src="MCVideo" alt="hyt的MC视频"></video>
     </div>
     <div id="close-btn" @click="emit('closeProject')">关闭</div>
 </template>
 
 
 <script lang="ts" setup>
+import Poster from "@/assets/video/video_poster.jpg";
+import MCVideo from "@/assets/video/minecraft.mp4";
+
 const emit = defineEmits(["closeProject"]);
 </script>
 

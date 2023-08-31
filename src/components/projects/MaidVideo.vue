@@ -2,14 +2,16 @@
     <div id="content">
         <h1>超可爱的祝福快来看!!</h1>
         <h2>by 天海言言</h2>
-        <video controls poster="@/assets/video/video_poster.jpg" 
-            src="@/assets/video/maid_blessing.mp4" alt="言言的(?)祝福视频"></video>
+        <video controls :poster="Poster" :src="MaidVideo" alt="言言的祝福视频(?)"></video>
     </div>
     <div id="close-btn" @click="emit('closeProject')">关闭</div>
 </template>
 
 
 <script lang="ts" setup>
+import Poster from "@/assets/video/video_poster.jpg";
+import MaidVideo from "@/assets/video/maid_blessing.mp4";
+
 const emit = defineEmits(["closeProject"]);
 </script>
 
