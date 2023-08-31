@@ -145,7 +145,7 @@ export class PartyScene extends Phaser.Scene {
             if (element !== "cake" && !this.blowingCandles) {
                 // 吹蜡烛前，只能点击非蛋糕元素，记录是否被点击
                 // quest本身不计入questStatus中
-                if (element !== "quests") { 
+                if (element !== "quests") {
                     questStatus[element] = true; 
                 } 
                 
@@ -162,6 +162,7 @@ export class PartyScene extends Phaser.Scene {
             } else if (element === "cake" && this.blowingCandles) {
                 // 吹蜡烛的时候，等生日歌放完后，只能点击蛋糕来吹蜡烛
                 if (this.HBDSongDone) {
+                    this.HBDSongDone = false;
                     this.blowCandels();
                 }
             }
@@ -191,11 +192,11 @@ export class PartyScene extends Phaser.Scene {
 
         // 停止原bgm，1秒后放生日歌
         this.sound.get(this.bgm).stop();
-        const HBDSongPlay = this.sound.add("HBDSong").setVolume(0.4);
+        this.bgm = "HBDSong";
+        const HBDSongPlay = this.sound.add(this.bgm).setVolume(0.4);
         setTimeout(() => {
             HBDSongPlay.play();
         }, 1000);
-        HBDSongPlay.play();
         HBDSongPlay.on("complete", () => { 
             // 允许点蛋糕吹蜡烛
             this.HBDSongDone = true; 
@@ -204,6 +205,7 @@ export class PartyScene extends Phaser.Scene {
 
     blowCandels() {
         // 先播放吹蜡烛的声音
+        this.sound.get(this.bgm).stop();
         const blowSoundPlay = this.sound.add("blowSound").setVolume(0.7);
         blowSoundPlay.play();
         blowSoundPlay.on("complete", () => {
@@ -222,7 +224,9 @@ export class PartyScene extends Phaser.Scene {
             setTimeout(() => {
                 this.sound.add(this.bgm).setVolume(0.4).setLoop(true).play();
             }, 1000);
-            
+
+            // 结束吹蜡烛环节
+            this.blowingCandles = false;
         });
     }
 }

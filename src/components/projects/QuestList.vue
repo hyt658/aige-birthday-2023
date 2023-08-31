@@ -18,7 +18,7 @@
     <button id="close-btn" class="close-button" 
         @click="emit('closeProject')" v-if="!checked">关闭</button>
     <button id="blow-candel" class="close-button" 
-        @click="emit('readyToBlowCandels')" v-else>吹蜡烛</button>
+        @click.once="emit('readyToBlowCandels')" v-else>吹蜡烛</button>
 </div>
 </template>
 
