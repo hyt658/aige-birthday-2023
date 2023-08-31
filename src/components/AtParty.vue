@@ -9,6 +9,7 @@
             <FanVideo v-else-if="project === 'television'" @closeProject="closeProject"/>
             <MaidVideo v-else-if="project === 'maidVideo'" @closeProject="closeProject"/>
             <MCVideo v-else-if="project === 'minecraft'" @closeProject="closeProject"/>
+            <PianoShow v-else-if="project === 'radio'" @closeProject="closeProject"/>
             <QuestList v-else-if="project === 'quests'" @closeProject="closeProject"
                 @readyToBlowCandels="readyToBlowCandels" />
         </v-card>
@@ -40,6 +41,7 @@ import FanPaint from "@/components/projects/FanPaint.vue";
 import FanVideo from "@/components/projects/FanVideo.vue";
 import MaidVideo from "@/components/projects/MaidVideo.vue";
 import MCVideo from "@/components/projects/MCVideo.vue";
+import PianoShow from "@/components/projects/PianoShow.vue";
 import QuestList from "@/components/projects/QuestList.vue";
 
 // stage (change in dialogAnimation):

@@ -21,7 +21,6 @@ import BlowSound from "@/assets/audio/blow_sound.mp3";
 import HBDSong from "@/assets/audio/birthday_song_sing.wav";
 import HBDBgm from "@/assets/audio/birthday_song_bgm.wav";
 import ConfettiSound from "@/assets/audio/confetti.mp3";
-import JiangFengSong from "@/assets/audio/jiang_feng_song.aac";
 
 type Image = Phaser.GameObjects.Image
 type InstanceMap = {[key: string]: {
@@ -66,7 +65,6 @@ export class PartyScene extends Phaser.Scene {
         this.load.audio("HBDSong", HBDSong);
         this.load.audio("HBDBgm", HBDBgm);
         this.load.audio("confettiSound", ConfettiSound);
-        this.load.audio("jiangFengSong", JiangFengSong);
     }
 
     create() {
@@ -115,7 +113,7 @@ export class PartyScene extends Phaser.Scene {
         this.lights.addLight(width*0.523, height*0.56, 80, 0xffffff, 2);
 
         // 初始bgm
-        this.sound.add(this.bgm).setVolume(0.3).setLoop(true).play();
+        this.sound.add(this.bgm).setVolume(0.4).setLoop(true).play();
     }
 
     mouseHoverEvent(image: Image, element: string, text: string, posX: number, posY: number) {
@@ -151,26 +149,13 @@ export class PartyScene extends Phaser.Scene {
                     questStatus[element] = true; 
                 } 
                 
-                if (element !== "radio") {
-                    // 点击非收音机元素通知AtParty组件展示相对应的project子组件
-                    this.events.emit("openProject", element);
-                    image.emit("pointerout");
-                    // 展示子组件的时候禁用游戏输入
-                    this.game.input.enabled = false;
-                } else {
-                    // 收音机元素
-                    const currentBgm = this.sound.get(this.bgm);
-                    const radioSong = this.sound.add("jiangFengSong").setVolume(0.4);
+                this.events.emit("openProject", element);
+                image.emit("pointerout");
+                // 展示子组件的时候禁用游戏输入
+                this.game.input.enabled = false;
 
-                    currentBgm.pause();
-                    radioSong.play();
-                    radioSong.on("complete", () => {
-                        setTimeout(()=>{currentBgm.play();}, 1000);
-                    });
-                }
-
-                // 查看视频project的话暂停bgm
-                const vedioProjects = ["maidVideo", "television", "minecraft"];
+                // 查看视频和音频project的话暂停bgm
+                const vedioProjects = ["maidVideo", "television", "minecraft", "radio"];
                 if (vedioProjects.indexOf(element) != -1) {
                     this.sound.get(this.bgm).pause();
                 }
@@ -235,7 +220,7 @@ export class PartyScene extends Phaser.Scene {
             // 最后将bgm定死在生日歌
             this.bgm = "HBDBgm";
             setTimeout(() => {
-                this.sound.add(this.bgm).setVolume(0.3).setLoop(true).play();
+                this.sound.add(this.bgm).setVolume(0.4).setLoop(true).play();
             }, 1000);
             
         });
