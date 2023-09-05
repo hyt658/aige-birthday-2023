@@ -30,6 +30,3 @@ coverage
 房间.psd
 房间（改）.psd
 plan.txt
-
-# do not push large videos
-src/assets/video/
