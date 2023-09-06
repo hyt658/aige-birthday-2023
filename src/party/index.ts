@@ -193,7 +193,7 @@ export class PartyScene extends Phaser.Scene {
         // 停止原bgm，1秒后放生日歌
         this.sound.get(this.bgm).stop();
         this.bgm = "HBDSong";
-        const HBDSongPlay = this.sound.add(this.bgm).setVolume(0.4);
+        const HBDSongPlay = this.sound.add(this.bgm).setVolume(0.3);
         setTimeout(() => {
             HBDSongPlay.play();
         }, 1000);
