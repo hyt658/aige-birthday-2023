@@ -65,6 +65,8 @@ export class PartyScene extends Phaser.Scene {
         this.load.audio("HBDSong", HBDSong);
         this.load.audio("HBDBgm", HBDBgm);
         this.load.audio("confettiSound", ConfettiSound);
+
+        console.log("phaser preload done");
     }
 
     create() {
@@ -111,11 +113,21 @@ export class PartyScene extends Phaser.Scene {
         this.lights.addLight(width*0.494, height*0.55, 80, 0xffffff, 2);
         this.lights.addLight(width*0.468, height*0.56, 80, 0xffffff, 2);
         this.lights.addLight(width*0.523, height*0.56, 80, 0xffffff, 2);
+
+        // 添加所有bgm
+        this.sound.add("haiDiLaoSong").setVolume(0.4).setLoop(true);
+        this.sound.add("HBDSong").setVolume(0.3);
+        this.sound.add("blowSound").setVolume(0.7);
+        this.sound.add("confettiSound").setVolume(0.7);
+        this.sound.add("HBDBgm").setVolume(0.4).setLoop(true);
+
+        console.log("phaser create done");
+        this.events.emit("createDone");
     }
 
     startMusic() {
         // 初始bgm
-        this.sound.add(this.bgm).setVolume(0.4).setLoop(true).play();
+        this.sound.get(this.bgm).play();
     }
 
     mouseHoverEvent(image: Image, element: string, text: string, posX: number, posY: number) {
@@ -195,7 +207,7 @@ export class PartyScene extends Phaser.Scene {
         // 停止原bgm，1秒后放生日歌
         this.sound.get(this.bgm).stop();
         this.bgm = "HBDSong";
-        const HBDSongPlay = this.sound.add(this.bgm).setVolume(0.3);
+        const HBDSongPlay = this.sound.get(this.bgm);
         setTimeout(() => {
             HBDSongPlay.play();
         }, 1000);
@@ -208,7 +220,7 @@ export class PartyScene extends Phaser.Scene {
     blowCandels() {
         // 先播放吹蜡烛的声音
         this.sound.get(this.bgm).stop();
-        const blowSoundPlay = this.sound.add("blowSound").setVolume(0.7);
+        const blowSoundPlay = this.sound.get("blowSound");
         blowSoundPlay.play();
         blowSoundPlay.on("complete", () => {
             // 结束后吹蜡烛，放拉炮
@@ -218,13 +230,13 @@ export class PartyScene extends Phaser.Scene {
                 image.setPipeline("MultiPipeline");
             });
             this.lights.enable();
-            this.sound.add("confettiSound").setVolume(0.7).play();
+            this.sound.get("confettiSound").play();
             shootConfetti();
 
             // 最后将bgm定死在生日歌
             this.bgm = "HBDBgm";
             setTimeout(() => {
-                this.sound.add(this.bgm).setVolume(0.4).setLoop(true).play();
+                this.sound.get(this.bgm).play();
             }, 1000);
 
             // 结束吹蜡烛环节
