@@ -13,8 +13,7 @@ import { ref } from "vue";
 import OutDoor from "@/components/OutDoor.vue";
 import AtParty from "@/components/AtParty.vue";
 
-// const currStage = ref("outdoor");    // DEBUG
-const currStage = ref("party");
+const currStage = ref("outdoor");
 
 function changeStage(): void {
     currStage.value = "party";

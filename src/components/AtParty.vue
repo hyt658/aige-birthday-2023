@@ -50,7 +50,7 @@ import QuestList from "@/components/projects/QuestList.vue";
 //  3. unknown-dialog
 //  4. unknown-dialog过渡fans-dialog
 //  5. fans-dialog
-const stage = ref(6);   // DEBUG
+const stage = ref(1);
 const message = ref("预备... ");
 const isProjectOpen = ref(false);
 const project = ref("none");
@@ -160,7 +160,7 @@ onMounted(() => {
     });
 
     // 刚开始禁止互动，等过完对话后允许
-    // partyGame.input.enabled = false;   DEBUG
+    partyGame.input.enabled = false;
 });
 
 // 没有project窗口打开的时候通知Phaser恢复游戏互动
