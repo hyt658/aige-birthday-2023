@@ -9,7 +9,7 @@
             <div id="author">{{ image.author }}</div>
         </div>
     </div>
-    <div v-if="selectedImage" id="image-modal" @click="selectedImage = ''">
+    <div v-if="selectedImage" id="image-modal" @click="closeImage">
         <img :src="selectedImage" />
     </div>
     <div id="close-btn" @click="emit('closeProject')">关闭</div>
@@ -19,19 +19,25 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import Hyt658 from "@/assets/images/fan_paint/hyt658.png";
-import DaoZhu from "@/assets/images/fan_paint/daozhu.png";
 import YanYan from "@/assets/images/fan_paint/yanyan.png";
+import QingJiu from "@/assets/images/fan_paint/qingjiu.png";
+import DaoZhu from "@/assets/images/fan_paint/daozhu.png";
 
 const emit = defineEmits(["closeProject"]);
 const selectedImage = ref("");
 const images = [
     { id: 1, src: Hyt658, alt: "hyt658的贺图", author: "hyt658" },
     { id: 2, src: YanYan, alt: "言言的贺图", author: "言言" },
-    { id: 3, src: DaoZhu, alt: "岛主的贺图", author: "岛主" }
+    { id: 3, src: QingJiu, alt: "清酒的贺图", author: "清酒" }, 
+    { id: 4, src: DaoZhu, alt: "岛主的贺图", author: "岛主" }
 ];
 
 function openImage(src: string) {
     selectedImage.value = src;
+}
+
+function closeImage() {
+    selectedImage.value = '';
 }
 </script>
 
