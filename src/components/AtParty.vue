@@ -94,6 +94,9 @@ function confettiSuprise() {
             // 展示祝生快消息，放礼炮
             dialogAnimation("#unknown-dialog", "#fans-dialog");
             shootConfetti();
+            
+            // 放完烟花后开始放party BGM
+            partyScene.startMusic();
 
             // 展示后3.5秒内点击消息框会无效
             setTimeout(() => {

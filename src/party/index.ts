@@ -111,7 +111,9 @@ export class PartyScene extends Phaser.Scene {
         this.lights.addLight(width*0.494, height*0.55, 80, 0xffffff, 2);
         this.lights.addLight(width*0.468, height*0.56, 80, 0xffffff, 2);
         this.lights.addLight(width*0.523, height*0.56, 80, 0xffffff, 2);
+    }
 
+    startMusic() {
         // 初始bgm
         this.sound.add(this.bgm).setVolume(0.4).setLoop(true).play();
     }
