@@ -20,6 +20,8 @@
 import { ref } from "vue";
 import Hyt658 from "@/assets/images/fan_paint/hyt658.png";
 import YanYan from "@/assets/images/fan_paint/yanyan.png";
+import PaiDaGe from "@/assets/images/fan_paint/pai_da_ge.jpg";
+import AiGe from "@/assets/images/fan_paint/ai_ge.jpg";
 import QingJiu from "@/assets/images/fan_paint/qingjiu.png";
 import DaoZhu from "@/assets/images/fan_paint/daozhu.png";
 
@@ -28,8 +30,10 @@ const selectedImage = ref("");
 const images = [
     { id: 1, src: Hyt658, alt: "hyt658的贺图", author: "hyt658" },
     { id: 2, src: YanYan, alt: "言言的贺图", author: "言言" },
-    { id: 3, src: QingJiu, alt: "清酒的贺图", author: "清酒" }, 
-    { id: 4, src: DaoZhu, alt: "岛主的贺图", author: "岛主" }
+    { id: 3, src: PaiDaGe, alt: "言言做的派大鸽", author: "言言" },
+    { id: 4, src: AiGe, alt: "言言做的艾鸽", author: "言言" },
+    { id: 5, src: QingJiu, alt: "清酒的贺图", author: "清酒" }, 
+    { id: 6, src: DaoZhu, alt: "岛主的贺图", author: "岛主" }
 ];
 
 function openImage(src: string) {
